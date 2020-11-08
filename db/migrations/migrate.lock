@@ -1,0 +1,6 @@
+# Prisma Migrate lockfile v1
+
+20201108211229-added-task
+20201108213059-added-role-to-user
+20201108213353-changed-some-requirements-in-user
+20201108214153-changed-some-in-tasks

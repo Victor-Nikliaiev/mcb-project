@@ -1,0 +1,23 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Task",
+      "field": "deadline",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Task",
+      "field": "completion",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Task",
+      "field": "completed",
+      "arity": "Optional"
+    }
+  ]
+}
