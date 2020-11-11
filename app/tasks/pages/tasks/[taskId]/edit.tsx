@@ -25,7 +25,7 @@ export const EditTask = () => {
               data: {
                 usersInCharge: {
                   connect: {
-                    id: 2,
+                    email: "victor.nikliaiev@gmail.com",
                   },
                 },
               },

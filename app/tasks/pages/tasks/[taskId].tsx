@@ -8,7 +8,11 @@ export const Task = () => {
   const router = useRouter()
   const taskId = useParam("taskId", "number")
   const [task] = useQuery(getTask, {
-    where: { id: 2 },
+    where: { id: taskId },
+    include: {
+      usersInCharge: true,
+      creator: true,
+    },
   })
   const [deleteTaskMutation] = useMutation(deleteTask)
 
@@ -17,6 +21,11 @@ export const Task = () => {
       <h1>Task {task.id}</h1>
       <pre>{JSON.stringify(task, null, 2)}</pre>
       <h2>Users in Charge:</h2>
+      <ul>
+        {task.usersInCharge.map((user) => (
+          <li key={user.id}>{user.email}</li>
+        ))}
+      </ul>
 
       <Link href="/tasks/[taskId]/edit" as={`/tasks/${task.id}/edit`}>
         <a>Edit</a>

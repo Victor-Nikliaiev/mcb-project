@@ -33,6 +33,7 @@ const NewTaskPage: BlitzPage = () => {
               },
             })
             alert("Success!" + JSON.stringify(task))
+            console.log(task)
             router.push("/tasks/[taskId]", `/tasks/${task.id}`)
           } catch (error) {
             alert("Error creating task " + JSON.stringify(error, null, 2))

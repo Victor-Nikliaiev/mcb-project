@@ -40,7 +40,7 @@ model User {
   bio            String?
   position       Position[]
   createdTasks   Task[]     @relation("createdTask")
-  tasksInCharge  Task[]
+  tasksInCharge  Task[]     @relation("userInCharge")
   // dialogs        Dialog[]
   // posts            Post[]
   // news             News[]
@@ -51,6 +51,7 @@ model User {
   // workingTime      WorkingTime
   // address          Address
   // requiredSupplies Supply[]
+
 }
 
 model Position {
@@ -71,5 +72,5 @@ model Task {
   completed     Boolean?
   creator       User?     @relation("createdTask", fields: [creatorId], references: [id])
   creatorId     Int?
-  usersInCharge User[]
+  usersInCharge User[]    @relation("userInCharge")
 }

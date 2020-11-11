@@ -26,44 +26,103 @@ model Session {
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  sessions       Session[]
-  role           String     @default("user")
-  avatar         String?
-  email          String     @unique
-  hashedPassword String?
-  name           String?
-  surname        String?
-  birthDate      DateTime?
-  bio            String?
-  position       Position[]
-  createdTasks   Task[]     @relation("createdTask")
-  tasksInCharge  Task[]
-  // dialogs        Dialog[]
-  // posts            Post[]
-  // news             News[]
-  // propositions     Proposition[]
-  // rate             Rate
-  // salary           Salary
-  // promotion        Promotion
-  // workingTime      WorkingTime
-  // address          Address
-  // requiredSupplies Supply[]
+  id                    Int            @id @default(autoincrement())
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  sessions              Session[]
+  role                  String         @default("employee")
+  avatar                String?
+  email                 String         @unique
+  hashedPassword        String?
+  name                  String?
+  surname               String?
+  birthDate             DateTime?
+  bio                   String?
+  address               Address?
+  positions             Position[]
+  createdTasks          Task[]         @relation("createdTask")
+  tasksInCharge         Task[]         @relation("userInCharge")
+  dialogs               Dialog[]       @relation("dialogs")
+  messages              Message[]
+  news                  News[]
+  rate                  Rate?
+  propositions          Proposition[]
+  departments           Department[]   @relation("employee")
+  responsibleDepartment Department?    @relation("responsible")
+  promoutionInfo        Promotion?
+  salary                Salary?
+  workingTime           WorkingTime?
+  notifications         Notification[] @relation("notifications")
+  requieredSupplies     Supply[]       @relation("supply")
+  issues                Issue[]
+  posts                 Post[]
 }
 
 model Position {
-  id     Int    @id @default(autoincrement())
-  name   String
-  user   User?  @relation(fields: [userId], references: [id])
-  userId Int?
+  id           Int         @id @default(autoincrement())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  name         String
+  employee     User?       @relation(fields: [employeeId], references: [id])
+  employeeId   Int?
+  public       Boolean     @default(true)
+  department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId Int?
+}
+
+model Promotion {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   Int
+  scores    Int
+}
+
+model Salary {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  value     Float
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   Int
+}
+
+model WorkingTime {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   Int
+  hours     Float
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  body      String
+  creator   User     @relation(fields: [creatorId], references: [id])
+  creatorId Int
+}
+
+model Issue {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  postedBy    User     @relation(fields: [postedById], references: [id])
+  postedById  Int
+  title       String
+  description String
+  solved      Boolean  @default(false)
 }
 
 model Task {
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  priority      String    @default("regular")
   title         String
   description   String
   deadline      DateTime?
@@ -71,5 +130,101 @@ model Task {
   completed     Boolean?
   creator       User?     @relation("createdTask", fields: [creatorId], references: [id])
   creatorId     Int?
-  usersInCharge User[]
+  usersInCharge User[]    @relation("userInCharge")
+}
+
+model Dialog {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  messages      Message[]
+  participiants User[]    @relation("dialogs")
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  dialog    Dialog   @relation(fields: [dialogId], references: [id])
+  dialogId  Int
+  text      String
+  creator   User     @relation(fields: [creatorId], references: [id])
+  creatorId Int
+  readed    Boolean  @default(false)
+}
+
+model TrustMessage {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  text      String
+}
+
+model Department {
+  id            Int        @id @default(autoincrement())
+  createdAt     DateTime   @default(now())
+  responsible   User       @relation("responsible", fields: [responsibleId], references: [id])
+  responsibleId Int
+  news          News[]     @relation("department news")
+  empoloyees    User[]     @relation("employee")
+  positions     Position[]
+}
+
+model News {
+  id           Int         @id @default(autoincrement())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  title        String
+  body         String
+  creator      User        @relation(fields: [userId], references: [id])
+  userId       Int
+  department   Department? @relation("department news", fields: [departmentId], references: [id])
+  departmentId Int?
+}
+
+model Proposition {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  creator   User?    @relation(fields: [creatorId], references: [id])
+  creatorId Int?
+  title     String
+  body      String
+}
+
+model Rate {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   Int
+}
+
+model Notification {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       String
+  text       String
+  employee   User     @relation("notifications", fields: [employeeId], references: [id])
+  employeeId Int
+}
+
+model Supply {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  completed    Boolean  @default(false)
+  requiredItem String
+  quantity     Int
+  employee     User     @relation("supply", fields: [employeeId], references: [id])
+  employeeId   Int
+}
+
+model Address {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  employee      User     @relation(fields: [employeeId], references: [id])
+  employeeId    Int
+  officeNumber  String
+  officeAddress String
 }

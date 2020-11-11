@@ -333,6 +333,38 @@
     {
       "tag": "CreateField",
       "model": "User",
+      "field": "role",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "role"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "role"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "\"user\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
       "field": "avatar",
       "type": "String",
       "arity": "Optional"
@@ -367,21 +399,21 @@
       "model": "User",
       "field": "name",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "User",
       "field": "surname",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "User",
       "field": "birthDate",
       "type": "DateTime",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
@@ -435,6 +467,31 @@
       "field": "tasksInCharge",
       "type": "Task",
       "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "tasksInCharge"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "tasksInCharge"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"userInCharge\""
     },
     {
       "tag": "CreateModel",
@@ -659,21 +716,21 @@
       "model": "Task",
       "field": "deadline",
       "type": "DateTime",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "Task",
       "field": "completion",
       "type": "Float",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "Task",
       "field": "completed",
       "type": "Boolean",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
@@ -748,6 +805,31 @@
       "field": "usersInCharge",
       "type": "User",
       "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Task",
+          "field": "usersInCharge"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Task",
+          "field": "usersInCharge"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"userInCharge\""
     }
   ]
 }
